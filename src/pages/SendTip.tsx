@@ -375,7 +375,7 @@ export function SendTip() {
                 className="input"
                 value={customTokenAddress}
                 onChange={(e) => setCustomTokenAddress(e.target.value)}
-                placeholder="bc1p... token contract"
+                placeholder="opt1p... or 0x..."
                 disabled={status === 'sending'}
               />
             </label>
@@ -400,7 +400,7 @@ export function SendTip() {
             className="input"
             value={jarAddress}
             onChange={(e) => setJarAddress(e.target.value)}
-            placeholder="bcrt1p..."
+            placeholder="opt1p..."
             disabled={status === 'sending'}
           />
         </label>

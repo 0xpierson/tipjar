@@ -3,6 +3,7 @@ import { Link, NavLink } from 'react-router-dom';
 import { formatAddress } from '../utils/format';
 import { useWallet } from '../hooks/useWallet';
 import { useProvider } from '../context/ProviderContext';
+import { getOpscanNetworkParam } from '../config';
 import logo from '../assets/logo.png';
 
 function formatBtcBalance(balanceSats: bigint): string {
@@ -23,8 +24,9 @@ function formatBtcBalance(balanceSats: bigint): string {
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { address, isConnected, openConnectModal, disconnect } = useWallet();
-  const { provider } = useProvider();
+  const { provider, network } = useProvider();
   const [btcBalance, setBtcBalance] = useState<bigint | null>(null);
+  const networkLabel = getOpscanNetworkParam(network);
 
   const handleConnect = (): void => {
     openConnectModal();
@@ -116,7 +118,7 @@ export function Header() {
               </span>
               {btcBalance !== null && (
                 <span className="address" style={{ marginLeft: '0.5rem' }}>
-                  BTC: {formatBtcBalance(btcBalance)}
+                  BTC: {formatBtcBalance(btcBalance)} ({networkLabel})
                 </span>
               )}
               <button type="button" className="btn btn-ghost" onClick={disconnect}>

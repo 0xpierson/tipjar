@@ -6,32 +6,21 @@ const RPC_URLS: Record<'regtest' | 'opnetTestnet' | 'mainnet', string> = {
   mainnet: 'https://mainnet.opnet.org',
 };
 
-const OP_NET_TESTNET_NETWORK: Network = (networks as typeof networks & {
-  readonly opnetTestnet: Network;
-}).opnetTestnet;
+// OPNet testnet currently uses the generic Bitcoin testnet params in @btc-vision/bitcoin.
+// We still label it "opnetTestnet" in our RPC/url config, but the underlying Network is `networks.testnet`.
+const OP_NET_TESTNET_NETWORK: Network = networks.testnet;
 
-function isSameNetwork(a: Network | null | undefined, b: Network): boolean {
-  if (!a) return false;
-  return (
-    a.bech32 === b.bech32 &&
-    a.pubKeyHash === b.pubKeyHash &&
-    a.scriptHash === b.scriptHash
-  );
+export function getRpcUrl(_network: Network | null | undefined): string {
+  // Tipjar currently only supports OPNet testnet; always use the testnet RPC.
+  return RPC_URLS.opnetTestnet;
 }
 
-export function getRpcUrl(network: Network | null | undefined): string {
-  if (isSameNetwork(network, networks.regtest)) return RPC_URLS.regtest;
-  if (isSameNetwork(network, OP_NET_TESTNET_NETWORK)) return RPC_URLS.opnetTestnet;
-  return RPC_URLS.mainnet;
+export function getOpscanNetworkParam(_network: Network | null | undefined): string {
+  // Tipjar currently only supports OPNet testnet.
+  return 'opnetTestnet';
 }
 
-export function getOpscanNetworkParam(network: Network | null | undefined): string {
-  if (isSameNetwork(network, networks.regtest)) return 'regtest';
-  if (isSameNetwork(network, OP_NET_TESTNET_NETWORK)) return 'opnetTestnet';
-  return 'mainnet';
-}
-
-export const DEFAULT_NETWORK: Network = networks.regtest;
+export const DEFAULT_NETWORK: Network = OP_NET_TESTNET_NETWORK;
 
 export const MAX_NOTE_BYTES = 80;
 
@@ -47,7 +36,7 @@ export const PILL_TOKEN: TipTokenConfig = {
   id: 'PILL',
   symbol: 'PILL',
   name: 'PILL',
-  address: '0xfb7df2f08d8042d4df0506c0d4cee3cfa5f2d7b02ef01ec76dd699551393a438',
+  address: '0xb09fc29c112af8293539477e23d8df1d3126639642767d707277131352040cbb',
   decimals: 8,
 };
 
@@ -55,6 +44,6 @@ export const MOTO_TOKEN: TipTokenConfig = {
   id: 'MOTO',
   symbol: 'MOTO',
   name: 'MOTO',
-  address: '0x0a6732489a31e6de07917a28ff7df311fc5f98f6e1664943ac1c3fe7893bdab5',
+  address: '0xfd4473840751d58d9f8b73bdd57d6c5260453d5518bd7cd02d0a4cf3df9bf4dd',
   decimals: 8,
 };
