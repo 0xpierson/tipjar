@@ -6,9 +6,9 @@ const RPC_URLS: Record<'regtest' | 'opnetTestnet' | 'mainnet', string> = {
   mainnet: 'https://mainnet.opnet.org',
 };
 
-// OPNet testnet currently uses the generic Bitcoin testnet params in @btc-vision/bitcoin.
-// We still label it "opnetTestnet" in our RPC/url config, but the underlying Network is `networks.testnet`.
-const OP_NET_TESTNET_NETWORK: Network = networks.testnet;
+// Prefer the dedicated OPNet testnet network if available; fall back to legacy `testnet`.
+const OP_NET_TESTNET_NETWORK: Network =
+  (networks as typeof networks & { opnetTestnet?: Network }).opnetTestnet;
 
 export function getRpcUrl(_network: Network | null | undefined): string {
   // Tipjar currently only supports OPNet testnet; always use the testnet RPC.

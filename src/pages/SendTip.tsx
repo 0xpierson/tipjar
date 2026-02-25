@@ -8,7 +8,7 @@ import { useWallet } from '../hooks/useWallet';
 
 type TipAsset = 'PILL' | 'MOTO' | 'CUSTOM';
 
-const QUICK_AMOUNTS_BTC = ['1', '10', '1000', '1000'] as const;
+const QUICK_AMOUNTS_BTC = ['0.1', '1', '10', '1000'] as const;
 
 function parseAmountToUnits(value: string, decimals: number): bigint {
   const trimmed = value.trim();
@@ -237,7 +237,25 @@ export function SendTip() {
         throw new Error('Wallet public key information is not available. Please reconnect your wallet.');
       }
       const senderAddress = Address.fromString(hashedMLDSAKey, publicKey);
-      const recipientAddress = await provider.getPublicKeyInfo(jarAddress.trim(), false);
+      const trimmedJar = jarAddress.trim();
+
+      let recipientAddress;
+      try {
+        recipientAddress = await provider.getPublicKeyInfo(trimmedJar, true);
+        if (!recipientAddress) {
+          throw new Error(
+            'Could not resolve the tip jar address to an OPNet Address. Make sure this address exists on opnetTestnet and has on-chain activity, then try again.',
+          );
+        }
+      } catch (err) {
+        const message = err instanceof Error ? err.message : String(err);
+        if (message.includes('No valid address content found')) {
+          throw new Error(
+            'Tip jar address is not valid on OPNet testnet. Please use a valid opt1... address created on opnetTestnet.',
+          );
+        }
+        throw err;
+      }
 
       const tokenContract = getContract<IOP20Contract>(
         tokenAddress,
@@ -307,9 +325,7 @@ export function SendTip() {
           <div>
             View on{' '}
             <a
-              href={`https://opscan.org/transactions/${txId}?network=${getOpscanNetworkParam(
-                network,
-              )}`}
+              href={`https://opscan.org/transactions/${txId}?network=op_testnet`}
               target="_blank"
               rel="noopener noreferrer"
               style={{ color: 'orange' }}

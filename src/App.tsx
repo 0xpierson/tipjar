@@ -17,7 +17,7 @@ function ProviderWrapper({ children }: { children: React.ReactNode }) {
 
   const value = useMemo(() => {
     const url = getRpcUrl(network);
-    const provider = new JSONRpcProvider(url, network);
+    const provider = new JSONRpcProvider({ url, network });
     return { provider, network };
   }, [network]);
 

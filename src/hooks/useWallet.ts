@@ -26,14 +26,6 @@ export function useWallet() {
   }, [walletConnect]);
 
   const isConnected = walletConnect.address !== null;
-  console.log('walletConnect', walletConnect);
-  console.log('isConnected', isConnected);
-  console.log('address', walletConnect.address);
-  console.log('publicKey', walletConnect.publicKey);
-  console.log('hashedMLDSAKey', walletConnect.hashedMLDSAKey);
-  console.log('mldsaPublicKey', walletConnect.mldsaPublicKey);
-  console.log('signer', walletConnect.signer);
-  console.log('walletType', walletConnect.walletType);
 
   return {
     address: walletConnect.walletAddress,
