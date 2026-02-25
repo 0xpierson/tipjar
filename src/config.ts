@@ -25,6 +25,12 @@ export function getRpcUrl(network: Network | null | undefined): string {
   return RPC_URLS.mainnet;
 }
 
+export function getOpscanNetworkParam(network: Network | null | undefined): string {
+  if (isSameNetwork(network, networks.regtest)) return 'regtest';
+  if (isSameNetwork(network, OP_NET_TESTNET_NETWORK)) return 'opnetTestnet';
+  return 'mainnet';
+}
+
 export const DEFAULT_NETWORK: Network = networks.regtest;
 
 export const MAX_NOTE_BYTES = 80;

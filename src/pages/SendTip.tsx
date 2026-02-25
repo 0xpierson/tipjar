@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { Address } from '@btc-vision/transaction';
 import { getContract, OP_20_ABI, type IOP20Contract, type TransactionParameters } from 'opnet';
 import { useProvider } from '../context/ProviderContext';
-import { PILL_TOKEN, MOTO_TOKEN } from '../config';
+import { PILL_TOKEN, MOTO_TOKEN, getOpscanNetworkParam } from '../config';
 import { useWallet } from '../hooks/useWallet';
 
 type TipAsset = 'PILL' | 'MOTO' | 'CUSTOM';
@@ -270,6 +270,7 @@ export function SendTip() {
 
       setTxId(receipt.transactionId ?? null);
       setStatus('done');
+      setAmountStr('');
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Send failed';
       // eslint-disable-next-line no-console
@@ -299,7 +300,23 @@ export function SendTip() {
 
       {status === 'done' && txId && (
         <div className="alert alert-success">
-          <strong>Tip sent.</strong> Tx: <code className="tx-id">{txId}</code>
+          <strong>Tip sent!</strong>
+          <div>
+            Tx: <code className="tx-id">{txId}</code>
+          </div>
+          <div>
+            View on{' '}
+            <a
+              href={`https://opscan.org/transactions/${txId}?network=${getOpscanNetworkParam(
+                network,
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: 'orange' }}
+            >
+              OPScan
+            </a>
+          </div>
         </div>
       )}
       {status === 'error' && errorMsg && (
