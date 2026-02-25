@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { Address } from '@btc-vision/transaction';
 import { getContract, OP_20_ABI, type IOP20Contract, type TransactionParameters } from 'opnet';
 import { useProvider } from '../context/ProviderContext';
-import { PILL_TOKEN, MOTO_TOKEN, getOpscanNetworkParam } from '../config';
+import { PILL_TOKEN, MOTO_TOKEN } from '../config';
 import { useWallet } from '../hooks/useWallet';
 
 type TipAsset = 'PILL' | 'MOTO' | 'CUSTOM';
