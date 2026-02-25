@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/config.ts","./src/main.tsx","./src/vite-env.d.ts","./src/components/header.tsx","./src/context/providercontext.tsx","./src/hooks/usewallet.ts","./src/pages/about.tsx","./src/pages/home.tsx","./src/pages/howitworks.tsx","./src/pages/myjar.tsx","./src/pages/sendtip.tsx","./src/utils/format.ts"],"version":"5.7.3"}
